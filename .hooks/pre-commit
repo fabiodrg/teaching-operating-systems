@@ -1,0 +1,27 @@
+#!/bin/bash
+regex="f[0-9]/README.md"
+
+for i in `git diff --cached --name-only`; do
+    # check if the filename matches the regex pattern
+    if [[ $i =~ $regex ]]; then
+        echo "[INFO] Detected changes to ${i}. Trying to compile README.pdf..."
+        # auxiliar temporary file
+        tmp_file="$(mktemp)"
+        # get the mardown file directiry
+        file_dir="$(dirname ${i})"
+        # prepare the output pathname for PDF
+        pdf_file="${file_dir}"/README.pdf
+        # use git show to dump the file contents from index
+        # pipe the file contents to md-to-pdf
+        # if success, stage the file
+        echo "git show :$i > $tmp_file && cat $tmp_file | ./node_modules/.bin/md-to-pdf --basedir $file_dir > $pdf_file && git add $pdf_file"
+        if git show :$i > $tmp_file && cat ${tmp_file} | ./node_modules/.bin/md-to-pdf --basedir $file_dir > $pdf_file && git add $pdf_file ; then
+            echo "[OK] Compiled ${pdf_file}"
+        else
+            echo "[ERROR] Failed to generate ${pdf_file}. Abort!"
+            exit 1
+        fi
+    fi
+done
+
+exit 0

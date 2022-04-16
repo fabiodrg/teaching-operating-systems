@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "md-to-pdf": "github:fabiodrg/md-to-pdf"
+  }
+}

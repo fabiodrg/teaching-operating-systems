@@ -1,2 +1,5 @@
+# ignore exercise pdf documents
 f[0-9].pdf
+# ignore folders for compiled binaries
+bin
 node_modules

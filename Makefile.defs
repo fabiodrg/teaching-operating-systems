@@ -1,0 +1,17 @@
+CC:=gcc
+CCFLAGS:=-Wall -Wextra -fno-stack-protector
+BIN:=./bin
+
+.PHONY: setup clean
+
+clean:
+# remove binary files and valgrind leftovers
+	@rm -rf $(BIN)
+	@rm -f **/vgcore*
+
+setup:
+# creates the folder for binaries
+	@mkdir -p $(BIN)
+
+# Make this makefile not executable, no default target
+.DEFAULT_GOAL:=
